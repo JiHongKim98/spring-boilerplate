@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '3.2.3'
     id 'io.spring.dependency-management' version '1.1.4'
+    id 'jacoco'
 }
 
 group = 'com.example'
@@ -22,14 +23,8 @@ repositories {
 }
 
 dependencies {
-    // Security (OAuth2)
-    // implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
-    // implementation 'org.springframework.boot:spring-boot-starter-security'
-
-    // Web
+    // Spring
     implementation 'org.springframework.boot:spring-boot-starter-web'
-
-    // Validation
     implementation 'org.springframework.boot:spring-boot-starter-validation'
 
     // Test
@@ -74,3 +69,32 @@ clean {
 tasks.named('test') {
     useJUnitPlatform()
 }
+
+jacoco {
+    toolVersion = '0.8.11'  // 2024-02 기준 최신
+}
+
+test {
+    finalizedBy jacocoTestReport
+}
+
+jacocoTestReport {
+    reports {
+        xml.required = true
+        html.required = true
+        csv.required = false
+    }
+    dependsOn test
+//    finalizedBy jacocoTestCoverageVerification
+}
+
+// TEST 커버리지가 60% 미만이면 빌드 실패
+//jacocoTestCoverageVerification {
+//    violationRules {
+//        rule {
+//            limit {
+//                minimum = 0.6
+//            }
+//        }
+//    }
+//}
