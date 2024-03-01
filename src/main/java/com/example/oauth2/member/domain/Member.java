@@ -25,6 +25,10 @@ public class Member {
 	@Column(name = "member_id")
 	private Long id;
 
+	@Enumerated(EnumType.STRING)
+	@Column(name = "social_type", nullable = false)
+	private SocialType socialType;
+
 	@Column(name = "social_id", unique = true, nullable = false)
 	private String socialId;
 
@@ -41,7 +45,8 @@ public class Member {
 	private Role role;
 
 	@Builder
-	public Member(String socialId, String email, String name, String imageUri, Role role) {
+	public Member(SocialType socialType, String socialId, String email, String name, String imageUri, Role role) {
+		this.socialType = socialType;
 		this.socialId = socialId;
 		this.name = name;
 		this.email = email;
