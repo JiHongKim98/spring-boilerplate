@@ -1,0 +1,13 @@
+spring:
+  profiles:
+    active: ${PROFILE}
+
+  jackson:
+    property-naming-strategy: SNAKE_CASE  # JSON 네이밍 전역 설정 (snake_type)
+
+oauth2:
+  google:
+    client-id: ${GOOGLE_OAUTH2_ID}
+    client-secret: ${GOOGLE_OAUTH2_SECRET}
+    redirect-uri: http://localhost:8080/api/v1/oauth/google/callback
+    grant-type: authorization_code
