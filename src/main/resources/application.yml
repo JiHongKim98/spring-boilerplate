@@ -5,6 +5,10 @@ spring:
   jackson:
     property-naming-strategy: SNAKE_CASE  # JSON 네이밍 전역 설정 (snake_type)
 
+jwt:
+  secret-key: ${JWT_SECRET_KEY}
+  exp: 3600000000 #3600000  # 1시간
+
 oauth2:
   google:
     client-id: ${GOOGLE_OAUTH2_ID}
