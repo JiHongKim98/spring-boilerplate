@@ -1,4 +1,4 @@
-package com.example.oauth2.health.controller;
+package com.example.oauth2.health.presentation;
 
 import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;

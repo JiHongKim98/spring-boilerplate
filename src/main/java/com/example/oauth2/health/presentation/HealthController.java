@@ -1,4 +1,4 @@
-package com.example.oauth2.health.controller;
+package com.example.oauth2.health.presentation;
 
 import java.time.LocalDateTime;
 
