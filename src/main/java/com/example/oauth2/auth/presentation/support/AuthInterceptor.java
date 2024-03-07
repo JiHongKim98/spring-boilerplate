@@ -5,6 +5,8 @@ import org.springframework.web.servlet.HandlerInterceptor;
 
 import com.example.oauth2.auth.domain.AuthPayload;
 import com.example.oauth2.auth.domain.TokenProvider;
+import com.example.oauth2.auth.exception.AuthException;
+import com.example.oauth2.auth.exception.AuthExceptionType;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -28,7 +30,7 @@ public class AuthInterceptor implements HandlerInterceptor {
 		log.info("Call :: LoginInterceptor - preHandle()");
 
 		String token = AuthHeaderExtractor.extract(request)
-			.orElseThrow(() -> new RuntimeException("401 오류 - UN_AUTHORIZATION"));  // TODO: 예외 처리 보강
+			.orElseThrow(() -> new AuthException(AuthExceptionType.UNAUTHORIZED));
 		AuthPayload authPayload = tokenProvider.extract(token);
 		authContext.setMemberId(authPayload.memberId());
 		return true;

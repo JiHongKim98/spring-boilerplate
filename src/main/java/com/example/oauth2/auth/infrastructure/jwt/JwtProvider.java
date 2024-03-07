@@ -10,6 +10,8 @@ import org.springframework.stereotype.Component;
 
 import com.example.oauth2.auth.domain.AuthPayload;
 import com.example.oauth2.auth.domain.TokenProvider;
+import com.example.oauth2.auth.exception.AuthException;
+import com.example.oauth2.auth.exception.AuthExceptionType;
 import com.example.oauth2.member.domain.Role;
 
 import io.jsonwebtoken.Claims;
@@ -60,15 +62,14 @@ public class JwtProvider implements TokenProvider {
 		return new AuthPayload(memberId, Role.of(role));
 	}
 
-	// TODO: 예외 처리 보강
 	private Claims parseClaim(String token) {
 		try {
 			return jwtParser.parseClaimsJws(token)
 				.getBody();
 		} catch (ExpiredJwtException ex) {
-			throw new RuntimeException("만료된 토큰 - expired_token");
+			throw new AuthException(AuthExceptionType.EXPIRED_TOKEN);
 		} catch (Exception ex) {
-			throw new RuntimeException("유효하지 않는 토큰 - invalid_token");
+			throw new AuthException(AuthExceptionType.INVALID_TOKEN);
 		}
 	}
 

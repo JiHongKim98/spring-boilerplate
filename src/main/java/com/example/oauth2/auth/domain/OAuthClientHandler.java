@@ -4,6 +4,9 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
+import com.example.oauth2.auth.exception.AuthException;
+import com.example.oauth2.auth.exception.AuthExceptionType;
+
 @Component
 public class OAuthClientHandler {
 
@@ -17,6 +20,6 @@ public class OAuthClientHandler {
 		return oAuthClientList.stream()
 			.filter(it -> it.isFitOAuthClient(socialType))
 			.findFirst()
-			.orElseThrow(() -> new RuntimeException("지원하지 않는 OAuthClient 입니다."));  // TODO: 예외 처리 보강
+			.orElseThrow(() -> new AuthException(AuthExceptionType.INVALID_OAUTH_TYPE));
 	}
 }

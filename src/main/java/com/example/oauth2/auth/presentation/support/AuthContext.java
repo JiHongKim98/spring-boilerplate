@@ -3,6 +3,9 @@ package com.example.oauth2.auth.presentation.support;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.RequestScope;
 
+import com.example.oauth2.auth.exception.AuthException;
+import com.example.oauth2.auth.exception.AuthExceptionType;
+
 @Component
 @RequestScope
 public class AuthContext {
@@ -11,7 +14,7 @@ public class AuthContext {
 
 	public Long getMemberId() {
 		if (this.memberId == null) {
-			throw new RuntimeException("401 오류 - UN_AUTHORIZATION");  // TODO: 예외 처리 보강
+			throw new AuthException(AuthExceptionType.UNAUTHORIZED);
 		}
 		return memberId;
 	}
