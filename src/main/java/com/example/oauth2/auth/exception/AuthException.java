@@ -1,8 +1,11 @@
 package com.example.oauth2.auth.exception;
 
-public class AuthException extends RuntimeException {
+import com.example.oauth2.common.exception.BaseException;
+import com.example.oauth2.common.exception.ExceptionType;
 
-	public AuthException(AuthExceptionType exceptionType) {
-		super(exceptionType.message());
+public class AuthException extends BaseException {
+
+	public AuthException(ExceptionType exceptionType) {
+		super(exceptionType);
 	}
 }
