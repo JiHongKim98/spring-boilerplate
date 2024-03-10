@@ -1,11 +1,10 @@
 package com.example.oauth2.auth.presentation;
 
-import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.oauth2.auth.application.AuthService;
@@ -22,13 +21,13 @@ public class AuthController {
 
 	private final AuthService authService;
 
-	@ResponseStatus(HttpStatus.OK)
 	@GetMapping("/{socialType}/callback")
-	public TokenResponse loginOrCreateMember(
+	public ResponseEntity<TokenResponse> loginOrCreateMember(
 		@PathVariable("socialType") String socialType,
 		@RequestParam("code") String code
 	) {
 		log.info("socialType = {}, code = {}", socialType, code);
-		return authService.loginOrCreateMember(socialType, code);
+
+		return ResponseEntity.ok(authService.loginOrCreateMember(socialType, code));
 	}
 }
