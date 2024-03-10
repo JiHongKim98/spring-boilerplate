@@ -3,6 +3,8 @@ plugins {
     id 'org.springframework.boot' version '3.2.3'
     id 'io.spring.dependency-management' version '1.1.4'
 
+    id 'org.hidetake.swagger.generator' version '2.19.2'
+    id 'com.epages.restdocs-api-spec' version '0.19.2'
     id 'jacoco'
 }
 
@@ -30,6 +32,13 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+
+    // REST Docs & Test
+    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+    testImplementation 'com.epages:restdocs-api-spec-mockmvc:0.19.2'
+
+    // Swagger
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.4.0'
 
     // Lombok
     compileOnly 'org.projectlombok:lombok'
@@ -69,6 +78,40 @@ clean {
 tasks.named('test') {
     useJUnitPlatform()
     finalizedBy jacocoTestReport
+}
+
+// OAS 설정
+openapi3 {
+    title = 'JiHongKim98 REST API'
+    description = 'API 문서'
+    version = this.version
+    format = 'yaml'
+    servers = [
+            { url = 'http://localhost:8080' },
+    ]
+    outputDirectory = layout.buildDirectory.dir("/resources/main/static/docs").get()
+}
+
+// Swagger 설정
+generateSwaggerUI {
+    dependsOn 'openapi3'
+}
+
+bootJar {
+    dependsOn 'generateSwaggerUI'
+}
+
+build {
+    dependsOn 'generateSwaggerUI'
+
+    // local 환경에서 swagger-ui 확인용
+    doLast {
+        delete file(layout.projectDirectory.dir("/src/main/resources/static/docs"))
+        copy {
+            from(layout.buildDirectory.dir("/resources/main/static/docs").get())
+            into(layout.projectDirectory.dir("/src/main/resources/static/docs"))
+        }
+    }
 }
 
 // jacoco 설정
