@@ -15,6 +15,7 @@ import org.springframework.web.context.WebApplicationContext;
 import com.example.oauth2.auth.application.AuthService;
 import com.example.oauth2.auth.infrastructure.jwt.JwtProvider;
 import com.example.oauth2.auth.presentation.support.AuthContext;
+import com.example.oauth2.member.application.MemberService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 // @MockBean(JpaMetamodelMappingContext.class)  // @EnableJpaAuditing 사용시
@@ -32,6 +33,9 @@ public abstract class ControllerTest {
 
 	@MockBean
 	protected AuthContext authContext;
+
+	@MockBean
+	protected MemberService memberService;
 
 	@MockBean
 	protected AuthService authService;
