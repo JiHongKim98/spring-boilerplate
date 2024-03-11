@@ -32,7 +32,8 @@ public class AuthInterceptor implements HandlerInterceptor {
 		String token = AuthHeaderExtractor.extract(request)
 			.orElseThrow(() -> new AuthException(AuthExceptionType.UNAUTHORIZED));
 		AuthPayload authPayload = tokenProvider.extract(token);
-		authContext.setMemberId(authPayload.memberId());
+		authContext.setContextFromPayload(authPayload);
+		// authContext.setMemberId(authPayload.memberId());
 		return true;
 	}
 }

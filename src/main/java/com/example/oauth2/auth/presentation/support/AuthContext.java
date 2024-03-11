@@ -3,6 +3,7 @@ package com.example.oauth2.auth.presentation.support;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.RequestScope;
 
+import com.example.oauth2.auth.domain.AuthPayload;
 import com.example.oauth2.auth.exception.AuthException;
 import com.example.oauth2.auth.exception.AuthExceptionType;
 
@@ -19,7 +20,11 @@ public class AuthContext {
 		return memberId;
 	}
 
-	public void setMemberId(Long memberId) {
-		this.memberId = memberId;
+	// public void setMemberId(Long memberId) {
+	// 	this.memberId = memberId;
+	// }
+
+	public void setContextFromPayload(AuthPayload authPayload) {
+		memberId = authPayload.memberId();
 	}
 }
