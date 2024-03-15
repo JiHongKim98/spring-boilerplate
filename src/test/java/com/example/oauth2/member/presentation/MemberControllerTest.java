@@ -19,7 +19,6 @@ import com.epages.restdocs.apispec.Schema;
 import com.example.oauth2.common.ControllerTest;
 import com.example.oauth2.member.application.dto.MyInfoResponse;
 import com.example.oauth2.member.domain.Member;
-import com.example.oauth2.member.domain.Role;
 import com.example.oauth2.member.fixture.MemberFixture;
 
 @WebMvcTest(MemberController.class)
@@ -29,7 +28,7 @@ class MemberControllerTest extends ControllerTest {
 	@DisplayName("인증 토큰 기반으로 사용자 본인의 정보를 반환.")
 	void getOwnInfoTest() throws Exception {
 		// given
-		Member member = MemberFixture.createMember("JiHongKim98", "test@test.com", Role.MEMBER);
+		Member member = MemberFixture.normalMember();
 		MyInfoResponse myInfoResponse = MyInfoResponse.of(member);
 		when(memberService.getOwnInfo(anyLong()))
 			.thenReturn(myInfoResponse);
