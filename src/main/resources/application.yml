@@ -7,7 +7,7 @@ spring:
 
 jwt:
   secret-key: ${JWT_SECRET_KEY}
-  exp: 3600000000 #3600000  # 1시간
+  exp: 3600000  # 1시간
 
 oauth2:
   google:
