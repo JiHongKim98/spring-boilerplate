@@ -15,9 +15,7 @@ import com.example.oauth2.auth.application.dto.TokenResponse;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @RestController
 @RequestMapping("/api/v1/oauth")
 @RequiredArgsConstructor
@@ -30,8 +28,6 @@ public class AuthController {
 		@PathVariable("socialType") String socialType,
 		@RequestParam("code") String code
 	) {
-		log.info("socialType = {}, code = {}", socialType, code);
-
 		return ResponseEntity.ok(authService.loginOrCreateMember(socialType, code));
 	}
 

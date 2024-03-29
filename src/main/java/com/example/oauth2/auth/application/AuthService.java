@@ -20,9 +20,7 @@ import com.example.oauth2.member.domain.Member;
 import com.example.oauth2.member.domain.respository.MemberRepository;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor

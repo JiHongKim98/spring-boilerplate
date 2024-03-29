@@ -54,7 +54,7 @@ class AuthServiceTest {
 		TokenResponse tokenResponse = TokenResponse.of("accessToken");
 
 		// when
-		TokenResponse actual = authService.loginOrCreateMember("google", "code");
+		TokenResponse actual = authService.loginOrRegister("google", "code");
 
 		// then
 		assertThat(actual).isEqualTo(tokenResponse);

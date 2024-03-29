@@ -10,9 +10,7 @@ import com.example.oauth2.member.application.MemberService;
 import com.example.oauth2.member.application.dto.MyInfoResponse;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @RestController
 @RequestMapping("/api/v1/members")
 @RequiredArgsConstructor
@@ -22,8 +20,6 @@ public class MemberController {
 
 	@GetMapping("/me")
 	public ResponseEntity<MyInfoResponse> me(@Auth Long memberId) {
-		log.info("memberId => {}", memberId);
-
 		return ResponseEntity.ok(memberService.getOwnInfo(memberId));
 	}
 }

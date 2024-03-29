@@ -29,7 +29,7 @@ class AuthControllerTest extends ControllerTest {
 	void loginTest() throws Exception {
 		// given
 		TokenResponse tokenResponse = TokenResponse.of("eyJhb.9bGLEdZ.pas-Ya");
-		when(authService.loginOrCreateMember(anyString(), anyString()))
+		when(authService.loginOrRegister(anyString(), anyString()))
 			.thenReturn(tokenResponse);
 
 		// when

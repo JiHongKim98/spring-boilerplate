@@ -26,8 +26,6 @@ public class AuthInterceptor implements HandlerInterceptor {
 		HttpServletResponse response,
 		Object handler
 	) throws Exception {
-		log.info("Call :: LoginInterceptor - preHandle()");
-
 		String token = AuthHeaderExtractor.extract(request)
 			.orElseThrow(() -> new AuthException(AuthExceptionType.UNAUTHORIZED));
 		Long memberId = tokenExtractor.extractAccessToken(token);

@@ -19,10 +19,6 @@ public class AuthContext {
 		return memberId;
 	}
 
-	// public void setMemberId(Long memberId) {
-	// 	this.memberId = memberId;
-	// }
-
 	public void setContext(Long memberId) {
 		this.memberId = memberId;
 	}
