@@ -35,7 +35,7 @@ public class JwtExtractorTest {
 			.compact();
 
 		// when
-		Long memberId = jwtExtractor.extract(token);
+		Long memberId = jwtExtractor.extractAccessToken(token);
 
 		// then
 		assertThat(memberId).isEqualTo(1L);
@@ -48,7 +48,7 @@ public class JwtExtractorTest {
 		String invalidToken = "invalid-access-token";
 
 		// when & then
-		assertThatThrownBy(() -> jwtExtractor.extract(invalidToken))
+		assertThatThrownBy(() -> jwtExtractor.extractAccessToken(invalidToken))
 			.isInstanceOf(AuthException.class)
 			.hasMessage(AuthExceptionType.INVALID_TOKEN.message());
 	}
@@ -66,7 +66,7 @@ public class JwtExtractorTest {
 			.compact();
 
 		// when & then
-		assertThatThrownBy(() -> jwtExtractor.extract(expiredToken))
+		assertThatThrownBy(() -> jwtExtractor.extractAccessToken(expiredToken))
 			.isInstanceOf(AuthException.class)
 			.hasMessage(AuthExceptionType.EXPIRED_TOKEN.message());
 	}

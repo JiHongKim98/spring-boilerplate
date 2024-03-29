@@ -20,7 +20,10 @@ import io.jsonwebtoken.security.Keys;
 @Component
 public class JwtExtractor implements TokenExtractor {
 
-	private static final String MEMBER_ID = "memberId";
+	private static final String MEMBER_ID = "member_id";
+	private static final String TOKEN_ID = "token_id";
+	private static final String ACCESS_TOKEN = "access_token";
+	private static final String REFRESH_TOKEN = "refresh_token";
 
 	private final JwtParser jwtParser;
 
@@ -32,9 +35,23 @@ public class JwtExtractor implements TokenExtractor {
 	}
 
 	@Override
-	public Long extract(String token) {
+	public Long extractAccessToken(String token) {
+		return extract(token, ACCESS_TOKEN, MEMBER_ID, Long.class);
+	}
+
+	@Override
+	public String extractRefreshToken(String token) {
+		return extract(token, REFRESH_TOKEN, TOKEN_ID, String.class);
+	}
+
+	private <T> T extract(String token, String expectedTokenType, String claimKey, Class<T> T) {
 		Claims claims = parseClaim(token);
-		return claims.get(MEMBER_ID, Long.class);
+		String subject = claims.getSubject();
+
+		if (subject.equals(expectedTokenType)) {
+			return claims.get(claimKey, T);
+		}
+		throw new AuthException(AuthExceptionType.INVALID_TOKEN_TYPE);
 	}
 
 	private Claims parseClaim(String token) {
