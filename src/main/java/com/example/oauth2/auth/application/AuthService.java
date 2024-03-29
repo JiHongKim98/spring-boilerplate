@@ -5,13 +5,17 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.example.oauth2.auth.application.dto.ReissueResponse;
 import com.example.oauth2.auth.application.dto.TokenResponse;
 import com.example.oauth2.auth.domain.OAuthClient;
 import com.example.oauth2.auth.domain.OAuthClientHandler;
 import com.example.oauth2.auth.domain.OAuthInfo;
 import com.example.oauth2.auth.domain.Token;
+import com.example.oauth2.auth.domain.TokenExtractor;
 import com.example.oauth2.auth.domain.TokenProvider;
 import com.example.oauth2.auth.domain.respository.TokenRepository;
+import com.example.oauth2.auth.exception.AuthException;
+import com.example.oauth2.auth.exception.AuthExceptionType;
 import com.example.oauth2.member.domain.Member;
 import com.example.oauth2.member.domain.respository.MemberRepository;
 
@@ -27,6 +31,7 @@ public class AuthService {
 	private final MemberRepository memberRepository;
 	private final OAuthClientHandler oAuthClientHandler;
 	private final TokenProvider tokenProvider;
+	private final TokenExtractor tokenExtractor;
 	private final TokenRepository tokenRepository;
 
 	@Transactional
@@ -49,5 +54,16 @@ public class AuthService {
 		String refreshToken = tokenProvider.generatedRefreshToken(tokenId);
 
 		return TokenResponse.of(accessToken, refreshToken);
+	}
+
+	public ReissueResponse reissueToken(String refreshToken) {
+		String tokenId = tokenExtractor.extractRefreshToken(refreshToken);
+
+		Token token = tokenRepository.findByTokenId(tokenId)
+			.orElseThrow(() -> new AuthException(AuthExceptionType.INVALID_TOKEN));
+
+		String accessToken = tokenProvider.generatedAccessToken(token.getMemberId());
+
+		return ReissueResponse.of(accessToken);
 	}
 }
