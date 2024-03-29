@@ -25,7 +25,8 @@ spring:
     ansi.enabled: always
 
 jwt:
-  exp: 2592000000  # 30일
+  access-exp: 604800000  # 7일
+  refresh-exp: 2592000000  # 30일
 
 logging:
   level:
