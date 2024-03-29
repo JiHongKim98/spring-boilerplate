@@ -4,7 +4,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import com.example.oauth2.auth.domain.AuthPayload;
-import com.example.oauth2.auth.domain.TokenProvider;
+import com.example.oauth2.auth.domain.TokenExtractor;
 import com.example.oauth2.auth.exception.AuthException;
 import com.example.oauth2.auth.exception.AuthExceptionType;
 
@@ -18,7 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class AuthInterceptor implements HandlerInterceptor {
 
-	private final TokenProvider tokenProvider;
+	private final TokenExtractor tokenExtractor;
 	private final AuthContext authContext;
 
 	@Override
@@ -31,9 +31,8 @@ public class AuthInterceptor implements HandlerInterceptor {
 
 		String token = AuthHeaderExtractor.extract(request)
 			.orElseThrow(() -> new AuthException(AuthExceptionType.UNAUTHORIZED));
-		AuthPayload authPayload = tokenProvider.extract(token);
+		AuthPayload authPayload = tokenExtractor.extract(token);
 		authContext.setContextFromPayload(authPayload);
-		// authContext.setMemberId(authPayload.memberId());
 		return true;
 	}
 }

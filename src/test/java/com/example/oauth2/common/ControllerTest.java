@@ -13,6 +13,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.example.oauth2.auth.application.AuthService;
+import com.example.oauth2.auth.infrastructure.jwt.JwtExtractor;
 import com.example.oauth2.auth.infrastructure.jwt.JwtProvider;
 import com.example.oauth2.auth.presentation.support.AuthContext;
 import com.example.oauth2.member.application.MemberService;
@@ -30,6 +31,9 @@ public abstract class ControllerTest {
 
 	@MockBean
 	protected JwtProvider jwtProvider;
+
+	@MockBean
+	protected JwtExtractor jwtExtractor;
 
 	@MockBean
 	protected AuthContext authContext;
