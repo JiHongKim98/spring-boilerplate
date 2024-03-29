@@ -7,11 +7,9 @@ import javax.crypto.SecretKey;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import com.example.oauth2.auth.domain.AuthPayload;
 import com.example.oauth2.auth.domain.TokenExtractor;
 import com.example.oauth2.auth.exception.AuthException;
 import com.example.oauth2.auth.exception.AuthExceptionType;
-import com.example.oauth2.member.domain.Role;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -23,7 +21,6 @@ import io.jsonwebtoken.security.Keys;
 public class JwtExtractor implements TokenExtractor {
 
 	private static final String MEMBER_ID = "memberId";
-	private static final String ROLE = "role";
 
 	private final JwtParser jwtParser;
 
@@ -35,11 +32,9 @@ public class JwtExtractor implements TokenExtractor {
 	}
 
 	@Override
-	public AuthPayload extract(String token) {
+	public Long extract(String token) {
 		Claims claims = parseClaim(token);
-		Long memberId = claims.get(MEMBER_ID, Long.class);
-		String role = claims.get(ROLE, String.class);
-		return new AuthPayload(memberId, Role.of(role));
+		return claims.get(MEMBER_ID, Long.class);
 	}
 
 	private Claims parseClaim(String token) {

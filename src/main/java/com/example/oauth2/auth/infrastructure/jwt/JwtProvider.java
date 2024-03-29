@@ -8,7 +8,6 @@ import javax.crypto.SecretKey;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import com.example.oauth2.auth.domain.AuthPayload;
 import com.example.oauth2.auth.domain.TokenProvider;
 
 import io.jsonwebtoken.Jwts;
@@ -19,7 +18,6 @@ import io.jsonwebtoken.security.Keys;
 public class JwtProvider implements TokenProvider {
 
 	private static final String MEMBER_ID = "memberId";
-	private static final String ROLE = "role";
 
 	private final SecretKey key;
 	private final Long exp;
@@ -33,11 +31,10 @@ public class JwtProvider implements TokenProvider {
 	}
 
 	@Override
-	public String generated(AuthPayload authPayload) {
+	public String generated(Long memberId) {
 		long now = System.currentTimeMillis();
 		return Jwts.builder()
-			.claim(MEMBER_ID, authPayload.memberId())
-			.claim(ROLE, authPayload.role())
+			.claim(MEMBER_ID, memberId)
 			.setIssuedAt(new Date(now))
 			.setExpiration(new Date(now + exp))
 			.signWith(key, SignatureAlgorithm.HS256)

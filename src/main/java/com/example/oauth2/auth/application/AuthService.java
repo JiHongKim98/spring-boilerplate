@@ -4,7 +4,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.oauth2.auth.application.dto.TokenResponse;
-import com.example.oauth2.auth.domain.AuthPayload;
 import com.example.oauth2.auth.domain.OAuthClient;
 import com.example.oauth2.auth.domain.OAuthClientHandler;
 import com.example.oauth2.auth.domain.OAuthInfo;
@@ -33,7 +32,7 @@ public class AuthService {
 		Member member = memberRepository.findBySocialId(oAuthInfo.socialId())
 			.orElseGet(() -> memberRepository.save(oAuthInfo.toMember()));
 
-		String accessToken = tokenProvider.generated(new AuthPayload(member.getId(), member.getRole()));
-		return new TokenResponse(accessToken);
+		String accessToken = tokenProvider.generated(member.getId());
+		return TokenResponse.of(accessToken);
 	}
 }

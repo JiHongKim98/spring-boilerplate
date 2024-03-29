@@ -7,9 +7,7 @@ import java.nio.charset.StandardCharsets;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import com.example.oauth2.auth.domain.AuthPayload;
 import com.example.oauth2.auth.infrastructure.jwt.JwtProvider;
-import com.example.oauth2.member.domain.Role;
 
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
@@ -23,13 +21,13 @@ class JwtProviderTest {
 	@Test
 	void generateTokenTest() {
 		// given
-		AuthPayload authPayload = new AuthPayload(1L, Role.MEMBER);
+		Long memberId = 1L;
 		JwtParser parser = Jwts.parserBuilder()
 			.setSigningKey(SECRET_KEY.getBytes(StandardCharsets.UTF_8))
 			.build();
 
 		// when
-		String accessToken = jwtProvider.generated(authPayload);
+		String accessToken = jwtProvider.generated(memberId);
 
 		// then
 		assertThat(parser.isSigned(accessToken)).isTrue();

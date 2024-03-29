@@ -3,7 +3,6 @@ package com.example.oauth2.auth.presentation.support;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-import com.example.oauth2.auth.domain.AuthPayload;
 import com.example.oauth2.auth.domain.TokenExtractor;
 import com.example.oauth2.auth.exception.AuthException;
 import com.example.oauth2.auth.exception.AuthExceptionType;
@@ -31,8 +30,8 @@ public class AuthInterceptor implements HandlerInterceptor {
 
 		String token = AuthHeaderExtractor.extract(request)
 			.orElseThrow(() -> new AuthException(AuthExceptionType.UNAUTHORIZED));
-		AuthPayload authPayload = tokenExtractor.extract(token);
-		authContext.setContextFromPayload(authPayload);
+		Long memberId = tokenExtractor.extract(token);
+		authContext.setContext(memberId);
 		return true;
 	}
 }

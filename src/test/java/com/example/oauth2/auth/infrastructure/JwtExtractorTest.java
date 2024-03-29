@@ -3,7 +3,6 @@ package com.example.oauth2.auth.infrastructure;
 import static io.jsonwebtoken.SignatureAlgorithm.*;
 import static io.jsonwebtoken.security.Keys.*;
 import static org.assertj.core.api.Assertions.*;
-import static org.assertj.core.api.SoftAssertions.*;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
@@ -11,7 +10,6 @@ import java.util.Date;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import com.example.oauth2.auth.domain.AuthPayload;
 import com.example.oauth2.auth.exception.AuthException;
 import com.example.oauth2.auth.exception.AuthExceptionType;
 import com.example.oauth2.auth.infrastructure.jwt.JwtExtractor;
@@ -37,13 +35,10 @@ public class JwtExtractorTest {
 			.compact();
 
 		// when
-		AuthPayload authPayload = jwtExtractor.extract(token);
+		Long memberId = jwtExtractor.extract(token);
 
 		// then
-		assertSoftly(softly -> {
-			softly.assertThat(authPayload.memberId()).isEqualTo(1L);
-			softly.assertThat(authPayload.role()).isEqualTo(Role.MEMBER);
-		});
+		assertThat(memberId).isEqualTo(1L);
 	}
 
 	@DisplayName("JWT 복호화 실패시 예외를 반환.")

@@ -5,10 +5,8 @@ import static org.assertj.core.api.Assertions.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import com.example.oauth2.auth.domain.AuthPayload;
 import com.example.oauth2.auth.exception.AuthException;
 import com.example.oauth2.auth.exception.AuthExceptionType;
-import com.example.oauth2.member.domain.Role;
 
 class AuthContextTest {
 
@@ -16,14 +14,14 @@ class AuthContextTest {
 	@Test
 	void getAuthContextTest() {
 		// given
-		AuthPayload authPayload = new AuthPayload(1L, Role.MEMBER);
+		Long memberId = 1L;
 		AuthContext authContext = new AuthContext();
 
 		// when
-		authContext.setContextFromPayload(authPayload);
+		authContext.setContext(memberId);
 
 		// then
-		assertThat(authContext.getMemberId()).isEqualTo(authPayload.memberId());
+		assertThat(authContext.getMemberId()).isEqualTo(memberId);
 	}
 
 	@DisplayName("인증 정보가 없을때 예외를 반환.")

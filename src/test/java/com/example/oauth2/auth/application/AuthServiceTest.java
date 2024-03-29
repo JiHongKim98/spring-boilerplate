@@ -15,7 +15,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.example.oauth2.auth.application.dto.TokenResponse;
-import com.example.oauth2.auth.domain.AuthPayload;
 import com.example.oauth2.auth.domain.OAuthClientHandler;
 import com.example.oauth2.auth.domain.TokenProvider;
 import com.example.oauth2.auth.infrastructure.FakeOAuthClient;
@@ -47,7 +46,7 @@ class AuthServiceTest {
 	void loginServiceTest() {
 		// given
 		Member member = MemberFixture.normalMember();
-		given(tokenProvider.generated(any(AuthPayload.class)))
+		given(tokenProvider.generated(anyLong()))
 			.willReturn("accessToken");
 		given(memberRepository.findBySocialId(anyString()))
 			.willReturn(Optional.of(member));
