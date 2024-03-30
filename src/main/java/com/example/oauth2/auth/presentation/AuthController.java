@@ -17,18 +17,18 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/v1/oauth")
+@RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
 public class AuthController {
 
 	private final AuthService authService;
 
 	@GetMapping("/{socialType}/callback")
-	public ResponseEntity<TokenResponse> loginOrCreateMember(
+	public ResponseEntity<TokenResponse> loginOrRegister(
 		@PathVariable("socialType") String socialType,
 		@RequestParam("code") String code
 	) {
-		return ResponseEntity.ok(authService.loginOrCreateMember(socialType, code));
+		return ResponseEntity.ok(authService.loginOrRegister(socialType, code));
 	}
 
 	@GetMapping("/reissue")

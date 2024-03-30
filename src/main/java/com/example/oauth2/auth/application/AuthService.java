@@ -33,7 +33,7 @@ public class AuthService {
 	private final TokenRepository tokenRepository;
 
 	@Transactional
-	public TokenResponse loginOrCreateMember(String socialType, String code) {
+	public TokenResponse loginOrRegister(String socialType, String code) {
 		OAuthClient oAuthClient = oAuthClientHandler.getOAuthClient(socialType);
 		OAuthInfo oAuthInfo = oAuthClient.getOAuthInfo(code);
 
