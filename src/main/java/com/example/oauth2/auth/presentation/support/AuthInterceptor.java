@@ -3,7 +3,7 @@ package com.example.oauth2.auth.presentation.support;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-import com.example.oauth2.auth.domain.TokenExtractor;
+import com.example.oauth2.auth.application.TokenExtractor;
 import com.example.oauth2.auth.exception.AuthException;
 import com.example.oauth2.auth.exception.AuthExceptionType;
 

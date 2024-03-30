@@ -8,7 +8,7 @@ import javax.crypto.SecretKey;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import com.example.oauth2.auth.domain.TokenProvider;
+import com.example.oauth2.auth.application.TokenProvider;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

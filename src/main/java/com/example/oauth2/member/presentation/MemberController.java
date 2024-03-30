@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.oauth2.auth.presentation.support.Auth;
+import com.example.oauth2.common.annotation.Auth;
 import com.example.oauth2.member.application.MemberService;
 import com.example.oauth2.member.application.dto.MyInfoResponse;
 

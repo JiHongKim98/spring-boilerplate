@@ -7,7 +7,7 @@ import javax.crypto.SecretKey;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import com.example.oauth2.auth.domain.TokenExtractor;
+import com.example.oauth2.auth.application.TokenExtractor;
 import com.example.oauth2.auth.exception.AuthException;
 import com.example.oauth2.auth.exception.AuthExceptionType;
 

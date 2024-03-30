@@ -1,6 +1,6 @@
 package com.example.oauth2.auth.infrastructure.google.dto;
 
-import com.example.oauth2.auth.domain.OAuthInfo;
+import com.example.oauth2.auth.application.dto.OAuthInfo;
 import com.example.oauth2.member.domain.SocialType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -11,7 +11,7 @@ public record GoogleUserInfo(
 	@JsonProperty("picture") String imageUri
 ) {
 
-	public OAuthInfo toDomain() {
+	public OAuthInfo toOAuthInfo() {
 		return OAuthInfo.builder()
 			.socialType(SocialType.GOOGLE)
 			.socialId(socialId)

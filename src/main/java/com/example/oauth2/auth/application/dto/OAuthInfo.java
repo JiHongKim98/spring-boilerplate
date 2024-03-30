@@ -1,4 +1,4 @@
-package com.example.oauth2.auth.domain;
+package com.example.oauth2.auth.application.dto;
 
 import com.example.oauth2.member.domain.Member;
 import com.example.oauth2.member.domain.Role;

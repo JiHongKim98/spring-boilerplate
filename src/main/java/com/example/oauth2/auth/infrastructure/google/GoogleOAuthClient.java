@@ -4,8 +4,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-import com.example.oauth2.auth.domain.OAuthClient;
-import com.example.oauth2.auth.domain.OAuthInfo;
+import com.example.oauth2.auth.application.OAuthClient;
+import com.example.oauth2.auth.application.dto.OAuthInfo;
 import com.example.oauth2.auth.infrastructure.google.dto.GoogleToken;
 import com.example.oauth2.auth.infrastructure.google.dto.GoogleUserInfo;
 
@@ -20,7 +20,7 @@ public class GoogleOAuthClient implements OAuthClient {
 	private static final String PROVIDER = "google";
 
 	private final GoogleProperties properties;
-	private final GoogleApiClient googleApiClient;
+	private final GoogleApiClient client;
 
 	@Override
 	public boolean isFitOAuthClient(String socialType) {
@@ -29,9 +29,9 @@ public class GoogleOAuthClient implements OAuthClient {
 
 	@Override
 	public OAuthInfo getOAuthInfo(String code) {
-		GoogleToken googleToken = googleApiClient.fetchToken(params(code));
-		GoogleUserInfo userInfo = googleApiClient.fetchUserInfo("Bearer " + googleToken.accessToken());
-		return userInfo.toDomain();
+		GoogleToken googleToken = client.fetchToken(params(code));
+		GoogleUserInfo googleUserInfo = client.fetchUserInfo("Bearer " + googleToken.accessToken());
+		return googleUserInfo.toOAuthInfo();
 	}
 
 	private MultiValueMap<String, String> params(String code) {

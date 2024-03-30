@@ -5,14 +5,10 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.example.oauth2.auth.application.dto.OAuthInfo;
 import com.example.oauth2.auth.application.dto.ReissueResponse;
 import com.example.oauth2.auth.application.dto.TokenResponse;
-import com.example.oauth2.auth.domain.OAuthClient;
-import com.example.oauth2.auth.domain.OAuthClientHandler;
-import com.example.oauth2.auth.domain.OAuthInfo;
 import com.example.oauth2.auth.domain.Token;
-import com.example.oauth2.auth.domain.TokenExtractor;
-import com.example.oauth2.auth.domain.TokenProvider;
 import com.example.oauth2.auth.domain.respository.TokenRepository;
 import com.example.oauth2.auth.exception.AuthException;
 import com.example.oauth2.auth.exception.AuthExceptionType;
