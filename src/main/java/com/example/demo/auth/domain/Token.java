@@ -9,7 +9,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -29,9 +28,12 @@ public class Token extends BaseTimeEntity {
 	@Column(name = "token_id")
 	private String tokenId;
 
-	@Builder
 	public Token(Long memberId, String tokenId) {
 		this.memberId = memberId;
+		this.tokenId = tokenId;
+	}
+
+	public void updateTokenId(String tokenId) {
 		this.tokenId = tokenId;
 	}
 }

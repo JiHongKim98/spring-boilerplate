@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.auth.application.dto.OAuthInfo;
-import com.example.demo.auth.application.dto.ReissueResponse;
 import com.example.demo.auth.application.dto.TokenResponse;
 import com.example.demo.auth.domain.Token;
 import com.example.demo.auth.domain.respository.TokenRepository;
@@ -37,27 +36,28 @@ public class AuthService {
 			.orElseGet(() -> memberRepository.save(oAuthInfo.toMember()));
 
 		String tokenId = UUID.randomUUID().toString();
-		Token token = Token.builder()
-			.memberId(member.getId())
-			.tokenId(tokenId)
-			.build();
+		Token token = new Token(member.getId(), tokenId);
 
 		tokenRepository.save(token);
 
-		String accessToken = tokenProvider.generatedAccessToken(member.getId());
-		String refreshToken = tokenProvider.generatedRefreshToken(tokenId);
-
-		return TokenResponse.of(accessToken, refreshToken);
+		return generatedTokenPair(token);
 	}
 
-	public ReissueResponse reissueToken(String refreshToken) {
+	public TokenResponse reissueToken(String refreshToken) {
 		String tokenId = tokenExtractor.extractRefreshToken(refreshToken);
 
 		Token token = tokenRepository.findByTokenId(tokenId)
 			.orElseThrow(() -> new AuthException(AuthExceptionType.INVALID_TOKEN));
 
-		String accessToken = tokenProvider.generatedAccessToken(token.getMemberId());
+		String newTokenId = UUID.randomUUID().toString();
+		token.updateTokenId(newTokenId);
 
-		return ReissueResponse.of(accessToken);
+		return generatedTokenPair(token);
+	}
+
+	private TokenResponse generatedTokenPair(Token token) {
+		String accessToken = tokenProvider.generatedAccessToken(token.getMemberId());
+		String refreshToken = tokenProvider.generatedRefreshToken(token.getTokenId());
+		return TokenResponse.of(accessToken, refreshToken);
 	}
 }
