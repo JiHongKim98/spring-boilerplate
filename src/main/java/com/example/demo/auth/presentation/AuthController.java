@@ -8,9 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.auth.application.AuthService;
+import com.example.demo.auth.application.AuthFacadeService;
 import com.example.demo.auth.application.dto.ReissueRequest;
-import com.example.demo.auth.application.dto.ReissueResponse;
 import com.example.demo.auth.application.dto.TokenResponse;
 
 import jakarta.validation.Valid;
@@ -21,20 +20,20 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AuthController {
 
-	private final AuthService authService;
+	private final AuthFacadeService authFacadeService;
 
 	@GetMapping("/{socialType}/callback")
 	public ResponseEntity<TokenResponse> loginOrRegister(
 		@PathVariable("socialType") String socialType,
 		@RequestParam("code") String code
 	) {
-		return ResponseEntity.ok(authService.loginOrRegister(socialType, code));
+		return ResponseEntity.ok(authFacadeService.loginOrRegister(socialType, code));
 	}
 
 	@GetMapping("/reissue")
-	public ResponseEntity<ReissueResponse> reissueToken(
+	public ResponseEntity<TokenResponse> reissueToken(
 		@RequestBody @Valid ReissueRequest request
 	) {
-		return ResponseEntity.ok(authService.reissueToken(request.refreshToken()));
+		return ResponseEntity.ok(authFacadeService.reissueToken(request));
 	}
 }

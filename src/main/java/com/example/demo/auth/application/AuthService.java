@@ -1,7 +1,5 @@
 package com.example.demo.auth.application;
 
-import java.util.UUID;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,36 +20,19 @@ import lombok.RequiredArgsConstructor;
 public class AuthService {
 
 	private final MemberRepository memberRepository;
-	private final OAuthClientHandler oAuthClientHandler;
 	private final TokenProvider tokenProvider;
-	private final TokenExtractor tokenExtractor;
 	private final TokenRepository tokenRepository;
 
 	@Transactional
-	public TokenResponse loginOrRegister(String socialType, String code) {
-		OAuthClient oAuthClient = oAuthClientHandler.getOAuthClient(socialType);
-		OAuthInfo oAuthInfo = oAuthClient.getOAuthInfo(code);
-
+	public TokenResponse loginOrRegister(OAuthInfo oAuthInfo) {
 		Member member = memberRepository.findBySocialId(oAuthInfo.socialId())
 			.orElseGet(() -> memberRepository.save(oAuthInfo.toMember()));
-
-		String tokenId = UUID.randomUUID().toString();
-		Token token = new Token(member.getId(), tokenId);
-
-		tokenRepository.save(token);
-
-		return generatedTokenPair(token);
+		return createToken(member);
 	}
 
-	public TokenResponse reissueToken(String refreshToken) {
-		String tokenId = tokenExtractor.extractRefreshToken(refreshToken);
-
-		Token token = tokenRepository.findByTokenId(tokenId)
-			.orElseThrow(() -> new AuthException(AuthExceptionType.INVALID_TOKEN));
-
-		String newTokenId = UUID.randomUUID().toString();
-		token.updateTokenId(newTokenId);
-
+	private TokenResponse createToken(Member member) {
+		Token token = new Token(member.getId());
+		tokenRepository.save(token);
 		return generatedTokenPair(token);
 	}
 
@@ -59,5 +40,17 @@ public class AuthService {
 		String accessToken = tokenProvider.generatedAccessToken(token.getMemberId());
 		String refreshToken = tokenProvider.generatedRefreshToken(token.getTokenId());
 		return TokenResponse.of(accessToken, refreshToken);
+	}
+
+	@Transactional
+	public TokenResponse reissueToken(String tokenId) {
+		Token token = tokenRepository.findByTokenId(tokenId)
+			.orElseThrow(() -> new AuthException(AuthExceptionType.INVALID_TOKEN));
+		return renewToken(token);
+	}
+
+	private TokenResponse renewToken(Token token) {
+		token.renewTokenId();
+		return generatedTokenPair(token);
 	}
 }

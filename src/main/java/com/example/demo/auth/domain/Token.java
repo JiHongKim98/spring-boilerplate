@@ -1,5 +1,7 @@
 package com.example.demo.auth.domain;
 
+import java.util.UUID;
+
 import com.example.demo.common.domain.BaseTimeEntity;
 
 import jakarta.persistence.Column;
@@ -28,12 +30,16 @@ public class Token extends BaseTimeEntity {
 	@Column(name = "token_id")
 	private String tokenId;
 
-	public Token(Long memberId, String tokenId) {
+	public Token(Long memberId) {
 		this.memberId = memberId;
-		this.tokenId = tokenId;
+		this.tokenId = generatedTokenId();
 	}
 
-	public void updateTokenId(String tokenId) {
-		this.tokenId = tokenId;
+	public void renewTokenId() {
+		this.tokenId = generatedTokenId();
+	}
+
+	private String generatedTokenId() {
+		return UUID.randomUUID().toString();
 	}
 }
