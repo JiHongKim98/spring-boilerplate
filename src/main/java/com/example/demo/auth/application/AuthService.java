@@ -27,11 +27,11 @@ public class AuthService {
 	public TokenResponse loginOrRegister(OAuthInfo oAuthInfo) {
 		Member member = memberRepository.findBySocialId(oAuthInfo.socialId())
 			.orElseGet(() -> memberRepository.save(oAuthInfo.toMember()));
-		return createToken(member);
+		return createToken(member.getId());
 	}
 
-	private TokenResponse createToken(Member member) {
-		Token token = new Token(member.getId());
+	private TokenResponse createToken(Long memberId) {
+		Token token = new Token(memberId);
 		tokenRepository.save(token);
 		return generatedTokenPair(token);
 	}
@@ -42,15 +42,10 @@ public class AuthService {
 		return TokenResponse.of(accessToken, refreshToken);
 	}
 
-	@Transactional
 	public TokenResponse reissueToken(String tokenId) {
 		Token token = tokenRepository.findByTokenId(tokenId)
 			.orElseThrow(() -> new AuthException(AuthExceptionType.INVALID_TOKEN));
-		return renewToken(token);
-	}
-
-	private TokenResponse renewToken(Token token) {
-		token.renewTokenId();
-		return generatedTokenPair(token);
+		tokenRepository.deleteByTokenId(token.getTokenId());
+		return createToken(token.getMemberId());
 	}
 }
