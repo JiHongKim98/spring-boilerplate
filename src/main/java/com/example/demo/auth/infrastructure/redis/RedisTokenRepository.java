@@ -24,13 +24,8 @@ public class RedisTokenRepository implements TokenRepository {
 
 	@Override
 	public void save(Token token) {
-		try {
-			String tokenJson = objectMapper.writeValueAsString(token);
-			redisTemplate.opsForValue().set(token.getTokenId(), tokenJson);
-			redisTemplate.expire(token.getTokenId(), TTL, TimeUnit.MINUTES);
-		} catch (JsonProcessingException ex) {
-			throw new RuntimeException(ex);  // TODO: 예외처리 보강
-		}
+		redisTemplate.opsForValue().set(token.getTokenId(), serializeToken(token));
+		redisTemplate.expire(token.getTokenId(), TTL, TimeUnit.MINUTES);
 	}
 
 	@Override
@@ -40,31 +35,23 @@ public class RedisTokenRepository implements TokenRepository {
 
 	@Override
 	public Optional<Token> findByTokenId(String tokenId) {
-		String tokenJson = redisTemplate.opsForValue().get(tokenId);
-		if (tokenJson != null) {
-			try {
-				Token token = objectMapper.readValue(tokenJson, Token.class);
-				return Optional.of(token);
-			} catch (JsonProcessingException ex) {
-				throw new RuntimeException(ex);  // TODO: 예외 처리 보강
-			}
-		}
-		return Optional.empty();
+		return Optional.ofNullable(redisTemplate.opsForValue().get(tokenId))
+			.map(this::deserializeToken);
 	}
 
-	private String serializerToken(Token token) {
+	private String serializeToken(Token token) {
 		try {
 			return objectMapper.writeValueAsString(token);
 		} catch (JsonProcessingException ex) {
-			throw new RuntimeException(ex);
+			throw new RuntimeException(ex);  // TODO: 예외 처리 보강
 		}
 	}
 
-	private Token deserializerToken(String tokenJson) {
+	private Token deserializeToken(String tokenJson) {
 		try {
 			return objectMapper.readValue(tokenJson, Token.class);
 		} catch (JsonProcessingException ex) {
-			throw new RuntimeException(ex);
+			throw new RuntimeException(ex);  // TODO: 예외 처리 보강
 		}
 	}
 }
