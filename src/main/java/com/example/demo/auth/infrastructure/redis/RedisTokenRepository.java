@@ -8,6 +8,8 @@ import org.springframework.stereotype.Component;
 
 import com.example.demo.auth.domain.Token;
 import com.example.demo.auth.domain.respository.TokenRepository;
+import com.example.demo.common.exception.redis.RedisException;
+import com.example.demo.common.exception.redis.RedisExceptionType;
 import com.example.demo.common.util.StringUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -50,7 +52,7 @@ public class RedisTokenRepository implements TokenRepository {
 		try {
 			return objectMapper.writeValueAsString(token);
 		} catch (JsonProcessingException ex) {
-			throw new RuntimeException(ex);  // TODO: 예외 처리 보강
+			throw new RedisException(RedisExceptionType.SERIALIZE_ERROR);
 		}
 	}
 
@@ -58,7 +60,7 @@ public class RedisTokenRepository implements TokenRepository {
 		try {
 			return objectMapper.readValue(tokenJson, Token.class);
 		} catch (JsonProcessingException ex) {
-			throw new RuntimeException(ex);  // TODO: 예외 처리 보강
+			throw new RedisException(RedisExceptionType.DESERIALIZE_ERROR);
 		}
 	}
 }
