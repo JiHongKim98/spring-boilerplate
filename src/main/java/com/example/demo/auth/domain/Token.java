@@ -19,6 +19,10 @@ public class Token {
 		this.memberId = memberId;
 	}
 
+	public boolean isMatchedMemberId(Long memberId) {
+		return this.memberId.equals(memberId);
+	}
+
 	private String generatedTokenId() {
 		return UUID.randomUUID().toString();
 	}

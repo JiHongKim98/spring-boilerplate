@@ -34,16 +34,33 @@ public class AuthService {
 		return createToken(token.getMemberId());
 	}
 
+	public void logout(Long memberId, String tokenId) {
+		Token token = getTokenById(tokenId);
+		validateTokenOwnership(token, memberId);
+		tokenRepository.deleteByTokenId(tokenId);
+	}
+
 	private Member getOrCreateMember(OAuthInfo oAuthInfo) {
 		return memberRepository.findBySocialId(oAuthInfo.socialId())
 			.orElseGet(() -> memberRepository.save(oAuthInfo.toMember()));
 	}
 
 	private Token getAndDeleteToken(String tokenId) {
-		Token token = tokenRepository.findByTokenId(tokenId)
-			.orElseThrow(() -> new AuthException(AuthExceptionType.INVALID_TOKEN));
-		tokenRepository.deleteByTokenId(token.getTokenId());
+		Token token = getTokenById(tokenId);
+		tokenRepository.deleteByTokenId(tokenId);
 		return token;
+	}
+
+	private Token getTokenById(String tokenId) {
+		return tokenRepository.findByTokenId(tokenId)
+			.orElseThrow(() -> new AuthException(AuthExceptionType.INVALID_TOKEN));
+	}
+
+	private void validateTokenOwnership(Token token, Long memberId) {
+		if (token.isMatchedMemberId(memberId)) {
+			return;
+		}
+		throw new AuthException(AuthExceptionType.UN_MATCHED_AUTHORIZATION);
 	}
 
 	private TokenResponse createToken(Long memberId) {
@@ -58,3 +75,4 @@ public class AuthService {
 		return TokenResponse.of(accessToken, refreshToken);
 	}
 }
+

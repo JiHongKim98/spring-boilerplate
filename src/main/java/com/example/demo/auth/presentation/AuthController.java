@@ -3,14 +3,17 @@ package com.example.demo.auth.presentation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.auth.application.AuthFacadeService;
+import com.example.demo.auth.application.dto.LogoutRequest;
 import com.example.demo.auth.application.dto.ReissueRequest;
 import com.example.demo.auth.application.dto.TokenResponse;
+import com.example.demo.common.annotation.Auth;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -35,5 +38,14 @@ public class AuthController {
 		@RequestBody @Valid ReissueRequest request
 	) {
 		return ResponseEntity.ok(authFacadeService.reissueToken(request));
+	}
+
+	@PostMapping("/logout")
+	public ResponseEntity<Void> logout(
+		@Auth Long memberId,
+		@RequestBody @Valid LogoutRequest request
+	) {
+		authFacadeService.logout(memberId, request);
+		return ResponseEntity.ok().build();
 	}
 }

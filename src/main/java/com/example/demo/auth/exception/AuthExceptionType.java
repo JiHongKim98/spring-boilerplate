@@ -10,6 +10,7 @@ public enum AuthExceptionType implements ExceptionType {
 	INVALID_TOKEN(HttpStatus.BAD_REQUEST, "유효하지 않는 토큰입니다."),
 	INVALID_TOKEN_TYPE(HttpStatus.BAD_REQUEST, "유효하지 않는 토큰 타입입니다."),
 	INVALID_OAUTH_TYPE(HttpStatus.BAD_REQUEST, "지원하지 않는 OAUTH 형식입니다."),
+	UN_MATCHED_AUTHORIZATION(HttpStatus.UNAUTHORIZED, "일치하지 않는 사용자 입니다."),
 	;
 
 	private final HttpStatus status;
