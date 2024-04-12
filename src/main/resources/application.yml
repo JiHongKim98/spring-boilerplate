@@ -5,6 +5,10 @@ spring:
   jackson:
     property-naming-strategy: SNAKE_CASE  # JSON 네이밍 전역 설정 (snake_type)
 
+  cors:
+    allowed-origins: ${ALLOWED_ORIGINS}
+    allowed-methods: ${ALLOWED_METHODS}
+
 jwt:
   secret-key: ${JWT_SECRET_KEY}
   access-exp: 86400000  # 24시간
