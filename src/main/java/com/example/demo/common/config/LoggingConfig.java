@@ -17,6 +17,7 @@ public class LoggingConfig implements WebMvcConfigurer {
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(loggingInterceptor)
-			.addPathPatterns("/**");
+			.addPathPatterns("/**")
+			.order(0);  // 인증 interceptor 보다 우선 순위로 지정
 	}
 }
