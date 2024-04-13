@@ -8,6 +8,7 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.example.demo.common.logging.MdcLoggingFilter;
+import com.example.demo.common.logging.RequestLoggingFilter;
 import com.example.demo.common.logging.query.QueryCountInterceptor;
 
 import jakarta.servlet.Filter;
@@ -32,6 +33,17 @@ public class LoggingConfig implements WebMvcConfigurer {
 
 		registration.setFilter(new MdcLoggingFilter());
 		registration.setOrder(Ordered.HIGHEST_PRECEDENCE);
+		registration.addUrlPatterns("/*");
+
+		return registration;
+	}
+
+	@Bean
+	public FilterRegistrationBean<Filter> filterRegistration() {
+		FilterRegistrationBean<Filter> registration = new FilterRegistrationBean<>();
+
+		registration.setFilter(new RequestLoggingFilter());
+		registration.setOrder(Ordered.HIGHEST_PRECEDENCE + 1);
 		registration.addUrlPatterns("/*");
 
 		return registration;
