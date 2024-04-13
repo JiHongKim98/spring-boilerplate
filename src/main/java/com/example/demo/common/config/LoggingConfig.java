@@ -7,8 +7,8 @@ import org.springframework.core.Ordered;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import com.example.demo.common.logging.LoggingInterceptor;
 import com.example.demo.common.logging.MdcLoggingFilter;
+import com.example.demo.common.logging.query.QueryCountInterceptor;
 
 import jakarta.servlet.Filter;
 import lombok.RequiredArgsConstructor;
@@ -17,11 +17,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class LoggingConfig implements WebMvcConfigurer {
 
-	private final LoggingInterceptor loggingInterceptor;
+	private final QueryCountInterceptor queryCountInterceptor;
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(loggingInterceptor)
+		registry.addInterceptor(queryCountInterceptor)
 			.addPathPatterns("/**")
 			.order(0);  // 인증 interceptor 보다 우선 순위로 지정
 	}
