@@ -10,7 +10,7 @@ import com.example.demo.auth.domain.Token;
 import com.example.demo.auth.domain.respository.TokenRepository;
 import com.example.demo.common.exception.redis.RedisException;
 import com.example.demo.common.exception.redis.RedisExceptionType;
-import com.example.demo.common.util.StringUtil;
+import com.example.demo.common.utils.StringUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
