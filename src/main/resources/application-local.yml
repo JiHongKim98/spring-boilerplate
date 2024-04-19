@@ -8,6 +8,14 @@ spring:
     password: #${MYSQL_PASSWORD}
     driver-class-name: org.h2.Driver #com.mysql.cj.jdbc.Driver
 
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    url: jdbc:h2:tcp://localhost/~/local-db;MODE=MySQL #jdbc:mysql://${MYSQL_URL}
+    user: sa #${MYSQL_USERNAME}
+    password: #${MYSQL_PASSWORD}
+    locations: classpath:db/migration
+
   data:
     redis:
       host: localhost
