@@ -2,16 +2,16 @@ package com.example.demo.common.logging;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.util.StopWatch;
-import org.springframework.util.StreamUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.util.ContentCachingRequestWrapper;
 import org.springframework.web.util.ContentCachingResponseWrapper;
+
+import com.example.demo.common.utils.StreamUtil;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -96,7 +96,7 @@ public class RequestLoggingFilter extends OncePerRequestFilter {
 
 	private Optional<String> getRequestBody(ContentCachingRequestWrapper request) {
 		ByteArrayInputStream inputStream = new ByteArrayInputStream(request.getContentAsByteArray());
-		String requestBody = convertInputStreamToString(inputStream);
+		String requestBody = StreamUtil.toString(inputStream);
 		if (StringUtils.hasText(requestBody)) {
 			return Optional.of(requestBody);
 		}
@@ -105,20 +105,20 @@ public class RequestLoggingFilter extends OncePerRequestFilter {
 
 	private Optional<String> getResponseBody(ContentCachingResponseWrapper response) {
 		ByteArrayInputStream inputStream = new ByteArrayInputStream(response.getContentAsByteArray());
-		String responseBody = convertInputStreamToString(inputStream);
+		String responseBody = StreamUtil.toString(inputStream);
 		if (StringUtils.hasText(responseBody)) {
 			return Optional.of(responseBody);
 		}
 		return Optional.empty();
 	}
 
-	// TODO: 리팩토링 - utils class 로 빼야할듯?
-	private String convertInputStreamToString(ByteArrayInputStream inputStream) {
-		try {
-			return StreamUtils.copyToString(inputStream, StandardCharsets.UTF_8);
-		} catch (IOException ex) {
-			log.error("convert exception", ex);
-			return "";
-		}
-	}
+	// convertInputStreamToString -> toString & utils 패키지로 이동
+	// private String convertInputStreamToString(ByteArrayInputStream inputStream) {
+	// 	try {
+	// 		return StreamUtils.copyToString(inputStream, StandardCharsets.UTF_8);
+	// 	} catch (IOException ex) {
+	// 		log.error("convert exception", ex);
+	// 		return "";
+	// 	}
+	// }
 }
