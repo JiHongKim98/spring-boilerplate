@@ -1,0 +1,2 @@
+CREATE DATABASE example;
+GRANT ALL PRIVILEGES ON example.* TO example@'%' WITH GRANT OPTION;
