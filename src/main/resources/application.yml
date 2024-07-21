@@ -1,27 +1,3 @@
 spring:
   profiles:
     active: ${PROFILE}
-
-  jackson:
-    property-naming-strategy: SNAKE_CASE  # JSON 네이밍 전역 설정 (snake_type)
-
-  cors:
-    allowed-origins: ${ALLOWED_ORIGINS}
-    allowed-methods: ${ALLOWED_METHODS}
-
-jwt:
-  secret-key: ${JWT_SECRET_KEY}
-  access-exp: 86400000  # 24시간
-  refresh-exp: 604800000  # 7일
-
-oauth2:
-  google:
-    client-id: ${GOOGLE_OAUTH2_ID}
-    client-secret: ${GOOGLE_OAUTH2_SECRET}
-    redirect-uri: ${GOOGLE_OAUTH2_REDIRECT_URI}
-    grant-type: authorization_code
-
-springdoc:
-  swagger-ui:
-    url: /docs/openapi3.yaml
-    path: /swagger

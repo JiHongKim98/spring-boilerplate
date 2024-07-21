@@ -2,6 +2,13 @@ server:
   port: 8080
 
 spring:
+  jackson:
+    property-naming-strategy: SNAKE_CASE  # JSON 네이밍 전역 설정 (snake_type)
+
+  cors:
+    allowed-origins: ${ALLOWED_ORIGINS}
+    allowed-methods: ${ALLOWED_METHODS}
+
   datasource:
     url: jdbc:mysql://${MYSQL_URL}
     username: ${MYSQL_USERNAME}
@@ -33,8 +40,21 @@ spring:
     ansi.enabled: always
 
 jwt:
-  access-exp: 604800000  # 7일
-  refresh-exp: 2592000000  # 30일
+  secret-key: ${JWT_SECRET_KEY}
+  access-exp: 9876543210
+  refresh-exp: 9876543210
+
+oauth2:
+  google:
+    client-id: ${GOOGLE_OAUTH2_ID}
+    client-secret: ${GOOGLE_OAUTH2_SECRET}
+    redirect-uri: ${GOOGLE_OAUTH2_REDIRECT_URI}
+    grant-type: authorization_code
+
+springdoc:
+  swagger-ui:
+    url: /docs/openapi3.yaml
+    path: /swagger
 
 logging:
   level:
