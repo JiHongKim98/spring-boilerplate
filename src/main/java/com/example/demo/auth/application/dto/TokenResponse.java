@@ -1,8 +1,10 @@
 package com.example.demo.auth.application.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public record TokenResponse(
 	String accessToken,
-	String refreshToken
+	@JsonIgnore String refreshToken
 ) {
 
 	public static TokenResponse of(String accessToken, String refreshToken) {
