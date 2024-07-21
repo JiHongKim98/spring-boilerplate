@@ -28,7 +28,7 @@ public class LoggingConfig implements WebMvcConfigurer {
 	}
 
 	@Bean
-	public FilterRegistrationBean<Filter> filter1() {
+	public FilterRegistrationBean<Filter> mdcLoggingFilter() {
 		FilterRegistrationBean<Filter> registration = new FilterRegistrationBean<>();
 
 		registration.setFilter(new MdcLoggingFilter());
@@ -39,7 +39,7 @@ public class LoggingConfig implements WebMvcConfigurer {
 	}
 
 	@Bean
-	public FilterRegistrationBean<Filter> filterRegistration() {
+	public FilterRegistrationBean<Filter> requestLoggingFilter() {
 		FilterRegistrationBean<Filter> registration = new FilterRegistrationBean<>();
 
 		registration.setFilter(new RequestLoggingFilter());
