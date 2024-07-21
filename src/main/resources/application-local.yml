@@ -9,6 +9,13 @@ spring:
     allowed-origins: ${ALLOWED_ORIGINS}
     allowed-methods: ${ALLOWED_METHODS}
 
+  cookie:
+    max-age: 1234567890
+    path: /
+    same-site: none
+    http-only: true
+    secure: false
+
   datasource:
     url: jdbc:mysql://${MYSQL_URL}
     username: ${MYSQL_USERNAME}
